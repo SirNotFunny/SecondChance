@@ -1,7 +1,7 @@
 # Quản lý giao dịch và chống lừa đảo
 
-Summary: Làm sao để giao dịch trên Second Chance diễn ra đúng thỏa thuận và không bị lừa đảo? Tài liệu gồm nghĩa vụ pháp lý, hai chế độ giao dịch, quy trình thanh toán đảm bảo, xác minh người dùng, kiểm duyệt tin đăng, đánh giá và xử lý tranh chấp.
-Why: đồ cũ giá trị cao (laptop, điện thoại, xe máy) là nơi sinh viên dễ bị lừa nhất. Nếu người dùng không tin nền tảng thì marketing cũng vô ích.
+Summary: Làm sao để giao dịch trên Second Chance diễn ra đúng thỏa thuận và không bị lừa đảo? Tài liệu gồm nghĩa vụ pháp lý, hai chế độ giao dịch, quy trình thanh toán đảm bảo (cả cọc phòng trọ), xác minh người dùng, kiểm duyệt tin đăng, đánh giá và xử lý tranh chấp.
+Why: đồ cũ giá trị cao (laptop, điện thoại, xe máy) và tiền cọc phòng trọ là nơi sinh viên dễ bị lừa nhất. Nếu người dùng không tin nền tảng thì marketing cũng vô ích.
 
 Khách hàng mục tiêu và danh mục hàng hóa được định nghĩa trong [Marketing](Marketing.md#khách-hàng-mục-tiêu).
 
@@ -23,7 +23,7 @@ Second Chance **không tự giữ tiền** của người dùng. Tự giữ ti�
 | | Giao dịch trực tiếp (mặc định) | Thanh toán đảm bảo (tùy chọn) |
 |---|---|---|
 | Ai giữ tiền | Người mua trả thẳng cho người bán | Đối tác thanh toán có giấy phép giữ đến khi người mua xác nhận |
-| Phù hợp với | Gặp mặt tại trường, hàng giá thấp, xe máy | Giao hàng qua đơn vị vận chuyển, laptop và điện thoại giá cao |
+| Phù hợp với | Gặp mặt tại trường, hàng giá thấp, xe máy | Giao hàng qua đơn vị vận chuyển, laptop và điện thoại giá cao, tiền cọc giữ phòng trọ |
 | Phí | Miễn phí | Người mua trả phí; mức phí chốt sau khi có báo giá của đối tác |
 | Nền tảng bảo vệ | Cảnh báo lừa đảo, đánh giá, báo cáo, khóa tài khoản | Tất cả bên trái + hoàn tiền khi không nhận được hàng hoặc hàng sai mô tả |
 
@@ -69,6 +69,34 @@ def buyer_disputes(order: Order, evidence: list[Video]) -> None:
 
 Trace với ví dụ: sinh viên A mua laptop 6.000.000 đ, trả tiền lúc giờ 0 → `PAID`. Người bán gửi hàng ở giờ 20 → `SHIPPED`. Đơn vị vận chuyển giao ở giờ 50 → `DELIVERED`, `delivered_at = 50`. A không làm gì. Ở giờ 123, `123 - 50 = 73 > 72` nên `release_to_seller` chạy → `COMPLETED`, người bán nhận 6.000.000 đ trừ phí. Nếu ở giờ 60 A mở khiếu nại kèm video mở hộp cho thấy màn hình vỡ → `DISPUTED`, tiền vẫn bị giữ.
 
+### Cọc phòng trọ
+
+Với pass phòng, "hàng" là quyền thuê tiếp phòng. Vì vậy, bước giao hàng được thay bằng hai bước: người thuê mới xem phòng tại chỗ, sau đó ký hợp đồng với chủ trọ. Tiền cọc giữ phòng chỉ đến tay người đăng khi hợp đồng mới đã ký.
+
+```python
+VIEW_DEADLINE_HOURS: int = 72     # người thuê mới phải đến xem phòng trong thời hạn này, thay cho SHIP_DEADLINE_HOURS
+SIGN_DEADLINE_HOURS: int = 168    # quá 7 ngày sau khi xem mà chưa ký hợp đồng thì chuyển sang DISPUTED để nhân viên xem xét
+
+def room_viewed(order: Order, matches_listing: bool) -> None:
+    """Người thuê mới báo đã xem phòng tại chỗ."""
+    assert order.state == State.PAID
+    if matches_listing:
+        order.state = State.DELIVERED          # phòng đúng như tin đăng, chờ ký hợp đồng
+    else:
+        partner.refund(order)                  # phòng khác ảnh hoặc không tồn tại: hoàn cọc
+        order.state = State.REFUNDED
+
+def lease_signed(order: Order, contract: Document) -> None:
+    assert order.state == State.DELIVERED
+    assert contract.tenant_id == order.buyer_id   # hợp đồng mới đứng tên người thuê mới
+    partner.release_to_seller(order)
+    order.state = State.COMPLETED
+```
+
+Trace với ví dụ: sinh viên B cọc 1.000.000 đ giữ phòng ở giờ 0 → `PAID`. B đến xem ở giờ 30, phòng đúng như video → `DELIVERED`. Ở giờ 80, B tải lên hợp đồng mới đứng tên B → `COMPLETED`, người đăng nhận 1.000.000 đ trừ phí. Nếu ở giờ 30 B thấy phòng khác hẳn video → `REFUNDED`, B nhận lại 1.000.000 đ.
+
+### Đồng kiểm khi giao hàng
+
 Khi giao qua đơn vị vận chuyển, Second Chance bật **đồng kiểm** (người nhận xem hàng trước khi nhận). GHN cho người nhận tối đa 15 phút để xem hàng ([nguồn](https://ghn.vn/blogs/thong-tin-giao-hang/ship-cod-duoc-kiem-tra-hang-khong)).
 
 ## Xác minh người dùng
@@ -90,10 +118,11 @@ Mọi tin đăng qua bộ lọc tự động trước khi hiển thị. Tin bị
 | Điện thoại | IMEI, ảnh màn hình trạng thái "Tìm iPhone" đã tắt (với iPhone) | Máy còn dính iCloud (Activation Lock) có thể bị chủ cũ khóa từ xa ([nguồn](https://hoanghamobile.com/tin-tuc/cach-kiem-tra-icloud-iphone-cu/)). IMEI dùng để tra máy báo mất |
 | Laptop | Số serial, ảnh cấu hình hệ thống | Tra bảo hành, chống mô tả sai cấu hình |
 | Xe máy | Ảnh giấy đăng ký xe; tên trên giấy trùng tên đã eKYC | Khi bán xe, chủ xe phải làm thủ tục thu hồi đăng ký, người mua làm thủ tục sang tên (Thông tư 79/2024/TT-BCA, Điều 15, [văn bản](https://hethongphapluat.com/thong-tu-79-2024-tt-bca-quy-dinh-ve-cap-thu-hoi-chung-nhan-dang-ky-xe-bien-so-xe-co-gioi-xe-may-chuyen-dung-do-bo-truong-bo-cong-an-ban-hanh/chuong-2/muc-2)). Tên không trùng là dấu hiệu xe không chính chủ |
+| Phòng trọ | Ảnh hợp đồng thuê đứng tên người đăng (trùng tên eKYC); video quay thật phòng, không chỉ ảnh; số điện thoại chủ trọ | Người thuê chỉ được cho thuê lại khi chủ trọ đồng ý (Bộ luật Dân sự 2015, Điều 475, [văn bản](https://hethongphapluat.com/bo-luat-dan-su-2015/dieu-475)), nên nhân viên gọi chủ trọ xác nhận trước khi duyệt tin. Video phòng trọ giá rẻ trên mạng thường là video lấy cắp từ nơi khác ([Tiền Phong, 2026](https://svvn.tienphong.vn/su-that-ve-nhung-video-quang-cao-phong-tro-vai-tram-nghin-dong-tai-trung-tam-ha-noi-post1872089.tpo)) |
 
 Bộ lọc tự động gắn cờ khi gặp một trong các dấu hiệu sau:
 
-- Giá thấp hơn 50% giá trung vị của cùng mẫu máy trên nền tảng.
+- Giá thấp hơn 50% giá trung vị của cùng mẫu máy, hoặc của phòng trọ cùng phường, trên nền tảng.
 - Nội dung chứa số tài khoản ngân hàng, đường link ngoài, hoặc mời nhắn qua Zalo/Messenger.
 - Ảnh trùng với ảnh của một tin khác (cùng mã băm ảnh).
 - Tài khoản mới dưới 7 ngày đăng từ 3 tin giá trị cao trở lên.
@@ -102,7 +131,7 @@ Bộ lọc tự động gắn cờ khi gặp một trong các dấu hiệu sau:
 
 Thủ đoạn phổ biến nhất khi mua đồ cũ online là yêu cầu chuyển tiền cọc "giữ hàng" rồi chặn liên lạc ([Thanh Niên, 2025](https://thanhnien.vn/mua-do-cu-tren-mang-coi-chung-sap-bay-thu-doan-lua-dao-185250318195006877.htm)). Khi tin nhắn chứa các từ "cọc", "chuyển khoản trước", số tài khoản hoặc mã QR, ứng dụng hiện cảnh báo:
 
-> Second Chance không bao giờ yêu cầu chuyển cọc ngoài nền tảng. Hãy dùng Thanh toán đảm bảo hoặc gặp mặt để kiểm tra hàng.
+> Second Chance không bao giờ yêu cầu chuyển cọc ngoài nền tảng. Hãy dùng Thanh toán đảm bảo hoặc gặp mặt để kiểm tra hàng. Không cọc phòng trọ trước khi xem phòng tận nơi.
 
 Với giao dịch trực tiếp, ứng dụng gợi ý điểm gặp mặt an toàn: cổng trường, thư viện, hoặc trụ sở công an phường (với xe máy).
 
