@@ -24,7 +24,7 @@ Second Chance **không tự giữ tiền** của người dùng. Tự giữ ti�
 |---|---|---|
 | Ai giữ tiền | Người mua trả thẳng cho người bán | Đối tác thanh toán có giấy phép giữ đến khi người mua xác nhận |
 | Phù hợp với | Gặp mặt tại trường, hàng giá thấp, xe máy | Giao hàng qua đơn vị vận chuyển, laptop và điện thoại giá cao, tiền cọc giữ phòng trọ |
-| Phí | Miễn phí | Người mua trả phí; mức phí chốt sau khi có báo giá của đối tác |
+| Phí | Miễn phí | Người mua trả phí; mức phí chốt sau khi có báo giá của đối tác. Giao dịch đầu tiên miễn phí trong 3 tháng đầu ([Marketing](Marketing.md#ưu-đãi-so-với-chợ-tốt)) |
 | Nền tảng bảo vệ | Cảnh báo lừa đảo, đánh giá, báo cáo, khóa tài khoản | Tất cả bên trái + hoàn tiền khi không nhận được hàng hoặc hàng sai mô tả |
 
 Chợ Tốt từng ra mắt tính năng tương tự ("Thanh toán đảm bảo", 2022, qua MoMo và Payoo) ([nguồn](https://www.chotot.com/kinh-nghiem/cach-mua-hang-va-thanh-toan-online-tren-cho-tot.html)) rồi ngừng từ 20/11/2024 ([thông báo](https://trogiup.chotot.com/thong-bao-ngung-cung-cap-tinh-nang-thanh-toan-dam-bao-tren-cho-tot/)). Chợ Tốt không công bố lý do ngừng. Do đó Second Chance giữ giao dịch trực tiếp làm mặc định, và chỉ vận hành thanh toán đảm bảo khi đối tác chịu phần giữ tiền.

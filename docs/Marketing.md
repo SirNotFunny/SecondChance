@@ -1,6 +1,6 @@
 # Kế hoạch marketing 3 tháng đầu
 
-Summary: Làm sao để quảng bá Second Chance tới sinh viên Hà Nội với ngân sách 5 triệu đồng trong 3 tháng? Tài liệu gồm khách hàng mục tiêu, định vị, thứ tự thu hút người dùng, kênh, ngân sách và chỉ số đo lường.
+Summary: Làm sao để quảng bá Second Chance tới sinh viên Hà Nội với ngân sách 5 triệu đồng trong 3 tháng? Tài liệu gồm khách hàng mục tiêu, định vị, thứ tự thu hút người dùng, ưu đãi so với Chợ Tốt, kênh, ngân sách và chỉ số đo lường.
 Why: một sàn mua bán chỉ có giá trị khi đã có sẵn cả người bán lẫn người mua. Ngân sách nhỏ nên phải chọn đúng một nhóm khách hàng và đúng thứ tự.
 
 ## Khách hàng mục tiêu
@@ -42,6 +42,20 @@ Người mua chỉ ở lại khi đã có hàng để xem, nên phải thu hút 
 | 1 | Có hàng: ≥ 200 tin đăng laptop, điện thoại, xe máy, phòng trọ | Tuyển đại sứ ở từng trường; đại sứ mời bạn bè đăng đồ; đăng lại tin sang các nhóm Facebook pass đồ kèm link về Second Chance |
 | 2 | Có người mua: ≥ 50 giao dịch hoàn tất | Chạy quảng cáo nhắm sinh viên Hà Nội; tổ chức "Ngày hội pass đồ" tại 1 trường; video TikTok |
 | 3 | Lan rộng: mở thêm 1 cụm trường | Chương trình giới thiệu bạn bè; đăng câu chuyện giao dịch thật và các vụ lừa đảo bị chặn |
+
+## Ưu đãi so với Chợ Tốt
+
+Ưu đãi nhắm vào **người bán**, vì người bán phải đến trước. Mỗi ưu đãi chỉ kéo dài 3 tháng đầu và gắn với tính năng an toàn, để người dùng ở lại vì lý do khác ngoài giá.
+
+| Ưu đãi | Chợ Tốt | Second Chance (3 tháng đầu) | Chi phí tiền mặt |
+|---|---|---|---|
+| Đẩy tin | Thu phí, ví dụ điện thoại và laptop khoảng 15.000–22.000 đ/ngày ([bảng giá](https://trogiupios.chotot.com/nguoi-ban/gia_day_tin/)); tin xe máy chuyển sang các hạng tin trả phí từ 19/03/2026 ([nguồn](https://trogiupios.chotot.com/nguoi-ban/goi-hoi-vien-cho-tot-xe/)) | Miễn phí | 0 đ |
+| Đăng tin | Một số chuyên mục thu phí đăng tin, ví dụ máy tính bảng 11.000 đ/tin từ 15/12/2023 ([thông báo](https://trogiupios.chotot.com/thong-bao-thay-doi-phi-dang-tin-va-giam-gia-dich-vu-day-tin-o-mot-so-chuyen-muc-do-dien-tu/)) | Miễn phí mọi chuyên mục | 0 đ |
+| Thanh toán đảm bảo | Đã ngừng từ 20/11/2024 | Miễn phí cho giao dịch đầu tiên của mỗi người dùng | Nằm trong dòng "Thưởng giới thiệu" của [Ngân sách](#ngân-sách) |
+
+Thông điệp cho người bán: "Đang bán trên Chợ Tốt? Đăng thêm lên Second Chance miễn phí, không mất phí đẩy tin." Người bán giữ tin trên Chợ Tốt và có thêm một kênh bán, nên việc thử Second Chance không tốn gì.
+
+Second Chance không phát voucher giảm tiền hàng cho người mua. Lý do thứ nhất: 50.000 đ × 100 giao dịch đã bằng toàn bộ ngân sách. Lý do thứ hai: hai tài khoản thông đồng có thể tự mua bán với nhau để lấy voucher.
 
 ## Kênh
 
