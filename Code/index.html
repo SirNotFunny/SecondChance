@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f8f5e9">
+  <title>Second Chance | Chợ đồ cũ cho sinh viên</title>
+  <link rel="icon" type="image/png" href="./LOGO.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+  <script src="./app.js" defer></script>
+</head>
+<body>
+  <div class="topline">SECOND CHANCE / STUDENT MARKETPLACE <span>Đồ cũ còn tốt, giá vừa túi.</span></div>
+  <header class="header">
+    <a href="#top" class="brand" aria-label="Second Chance, về đầu trang">
+      <img src="./LOGO.png" alt="Logo Second Chance" width="52" height="52">
+      <strong>second<span>chance.</span></strong>
+    </a>
+    <nav aria-label="Điều hướng chính">
+      <a href="#explore">Khám phá</a>
+      <a href="#how">Cách hoạt động</a>
+      <button type="button" id="saved-toggle" aria-pressed="false">Đã lưu <span id="saved-count">0</span></button>
+    </nav>
+    <button type="button" class="button button-green header-post" data-open-post>+ Đăng bán</button>
+  </header>
+
+  <main id="top">
+    <section class="hero wrap" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <span class="eyebrow">CHO SINH VIÊN, BỞI SINH VIÊN</span>
+        <h1 id="hero-title">Món đồ cũ.<br><em>Cơ hội mới.</em></h1>
+        <p class="slogan">give old products a second chance</p>
+        <p>Trao đổi, mua lại sách vở, đồ công nghệ và những món đồ còn tốt trong cộng đồng sinh viên Việt Nam.</p>
+        <div class="hero-actions">
+          <a class="button button-cream" href="#explore">Khám phá món đồ ↗</a>
+          <button class="button button-outline" type="button" data-open-post>Đăng món của bạn</button>
+        </div>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="hero-ring">↗</div>
+        <div class="art-note">DÙNG LẠI<br>YÊU THÊM<span> / 02</span></div>
+        <div class="art-card"><span>SECOND<br>CHANCE</span><b>♥</b></div>
+        <div class="art-small">mua lại. đổi tiếp.<br>dùng lâu.</div>
+      </div>
+      <div class="hero-index">01 / CHỢ ĐỒ CŨ SINH VIÊN</div>
+    </section>
+
+    <section class="market wrap" id="explore" aria-labelledby="explore-title">
+      <div class="search-panel">
+        <label class="search-label"><span class="sr-only">Tìm sản phẩm</span>
+          <input id="search" type="search" placeholder="⌕  Tìm máy tính, sách, tai nghe..." autocomplete="off">
+        </label>
+        <label>Giá tối đa
+          <select id="max-price">
+            <option value="all">Mọi mức giá</option>
+            <option value="100000">100.000 ₫</option>
+            <option value="300000">300.000 ₫</option>
+            <option value="500000">500.000 ₫</option>
+            <option value="1000000">1.000.000 ₫</option>
+          </select>
+        </label>
+        <label>Sắp xếp
+          <select id="sort">
+            <option value="newest">Mới đăng</option>
+            <option value="low">Giá thấp trước</option>
+            <option value="high">Giá cao trước</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="section-heading">
+        <div><span class="kicker">KHÁM PHÁ / 01</span><h2 id="explore-title">Vừa lên kệ<span>.</span></h2>
+          <p>Chọn món hợp nhu cầu và kiểm tra trực tiếp trước khi mua.</p></div>
+        <span id="result-count" role="status">Đang tải...</span>
+      </div>
+      <div class="chips" id="categories" aria-label="Danh mục">
+        <button class="active" data-category="all" aria-pressed="true">Tất cả</button>
+        <button data-category="Học tập" aria-pressed="false">Học tập</button>
+        <button data-category="Công nghệ" aria-pressed="false">Công nghệ</button>
+        <button data-category="Đồ dùng" aria-pressed="false">Đồ dùng</button>
+        <button data-category="Di chuyển" aria-pressed="false">Di chuyển</button>
+      </div>
+      <div class="source-row" id="sources" aria-label="Nguồn sản phẩm">
+        <div class="source-tabs">
+          <button class="active" data-source="all" aria-pressed="true">Tất cả</button>
+          <button data-source="student" aria-pressed="false">Từ sinh viên</button>
+          <button data-source="retailer" aria-pressed="false">Ưu đãi đối tác</button>
+          <button data-source="trade" aria-pressed="false">Có thể trao đổi</button>
+        </div>
+        <small>Giá và đối tác là dữ liệu minh họa</small>
+      </div>
+      <div id="listing-grid" class="listing-grid" aria-live="polite"></div>
+      <div id="empty-state" class="empty" hidden>
+        <strong>Chưa có món phù hợp</strong><p>Thử đổi từ khóa hoặc bộ lọc nhé.</p>
+        <button type="button" class="button button-green" id="reset-filters">Xóa bộ lọc</button>
+      </div>
+    </section>
+
+    <section class="how" id="how" aria-labelledby="how-title"><div class="wrap">
+      <span class="kicker">SECOND CHANCE / 02</span>
+      <h2 id="how-title">Một vòng đời mới<br>cho mỗi món đồ.</h2>
+      <div class="steps">
+        <article><span>01</span><h3>Tìm món hợp ý</h3><p>Tìm theo tên, danh mục, giá hoặc xem món sinh viên đang trao đổi.</p></article>
+        <article><span>02</span><h3>Hỏi và hẹn gặp</h3><p>Đặt câu hỏi về tình trạng, phụ kiện và chọn nơi gặp thuận tiện.</p></article>
+        <article><span>03</span><h3>Kiểm tra trước khi trả</h3><p>Ưu tiên nơi công cộng và kiểm tra sản phẩm trước khi giao dịch.</p></article>
+      </div>
+    </div></section>
+    <section class="cta wrap"><div><span class="kicker">ĐẾN LƯỢT BẠN</span>
+      <h2>Để món đồ của bạn<br><em>có thêm một lần bắt đầu.</em></h2></div>
+      <button type="button" class="button button-green" data-open-post>Đăng món miễn phí ↗</button>
+    </section>
+  </main>
+
+  <footer class="footer"><div class="wrap footer-inner">
+    <div><img src="./LOGO.png" alt="" width="44" height="44"><strong>Second Chance</strong>
+      <p>give old products a second chance</p></div>
+    <p>Bản mẫu cho dự án sinh viên. Chưa có thanh toán, xác minh người bán hoặc chuyển tin nhắn đến người bán.</p>
+  </div></footer>
+
+  <dialog id="post-dialog" class="dialog" aria-labelledby="post-title">
+    <button class="close" type="button" data-close aria-label="Đóng">×</button>
+    <span class="kicker">ĐĂNG TIN / SECOND CHANCE</span>
+    <h2 id="post-title">Đăng món đồ của bạn.</h2>
+    <p class="dialog-intro">Tin đăng thử nghiệm được lưu trên máy đang chạy máy chủ.</p>
+    <form id="post-form" class="form-grid">
+      <label class="full">Tên món đồ <input name="title" required minlength="5" maxlength="80" placeholder="Ví dụ: Máy tính khoa học còn tốt"></label>
+      <label>Danh mục <select name="category" required><option value="">Chọn danh mục</option><option>Học tập</option><option>Công nghệ</option><option>Đồ dùng</option><option>Di chuyển</option></select></label>
+      <label>Tình trạng <select name="condition" required><option value="">Chọn tình trạng</option><option>Như mới</option><option>Tốt</option><option>Đã qua sử dụng</option></select></label>
+      <label>Hình thức <select name="mode" id="mode" required><option value="sale">Bán lại</option><option value="trade">Trao đổi</option></select></label>
+      <label id="price-label"><span id="price-caption">Giá mong muốn (₫)</span><input name="price" type="number" min="1000" max="30000000" step="1000" required placeholder="Ví dụ: 180000"></label>
+      <label>Trường / khu vực <input name="campus" required minlength="2" maxlength="70" placeholder="Ví dụ: ĐHQG Hà Nội"></label>
+      <label>Tên hiển thị <input name="seller" required minlength="2" maxlength="40" placeholder="Ví dụ: Minh Anh"></label>
+      <label class="full">Mô tả <textarea name="description" required minlength="10" maxlength="800" rows="4" placeholder="Tình trạng thực tế, phụ kiện đi kèm, lịch có thể hẹn xem..."></textarea></label>
+      <label class="full">Liên kết ảnh HTTPS (không bắt buộc) <input name="imageUrl" type="url" maxlength="500" placeholder="https://..."></label>
+      <button class="button button-green full" type="submit">Đăng tin thử nghiệm</button>
+      <p id="post-status" class="form-status full" role="status"></p>
+    </form>
+  </dialog>
+
+  <dialog id="detail-dialog" class="dialog detail-dialog" aria-labelledby="detail-title">
+    <button class="close" type="button" data-close aria-label="Đóng">×</button>
+    <div class="detail-layout">
+      <div id="detail-media" class="detail-media"></div>
+      <div class="detail-copy"><span id="detail-badge" class="kicker"></span>
+        <h2 id="detail-title"></h2><strong id="detail-price" class="detail-price"></strong>
+        <p id="detail-description"></p>
+        <div class="facts"><span>Tình trạng <b id="detail-condition"></b></span>
+          <span>Khu vực <b id="detail-campus"></b></span>
+          <span>Người đăng <b id="detail-seller"></b></span></div>
+        <form id="message-form" class="compact-form">
+          <h3>Hỏi về món đồ</h3><p>Tin nhắn được lưu trong bản mẫu, chưa gửi đến người bán.</p>
+          <input name="buyerName" required minlength="2" maxlength="40" placeholder="Tên của bạn" aria-label="Tên của bạn">
+          <textarea name="message" required minlength="10" maxlength="500" rows="3" placeholder="Bạn muốn hỏi điều gì?" aria-label="Nội dung tin nhắn"></textarea>
+          <button class="button button-green" type="submit">Lưu lời nhắn</button>
+          <p id="message-status" class="form-status" role="status"></p>
+        </form>
+        <details class="report"><summary>Báo cáo tin đăng</summary>
+          <form id="report-form" class="compact-form">
+            <select name="reason" required aria-label="Lý do báo cáo"><option value="">Chọn lý do</option>
+              <option value="misleading">Thông tin không đúng</option>
+              <option value="fraud">Có dấu hiệu lừa đảo</option>
+              <option value="unsafe">Nội dung không phù hợp</option>
+              <option value="other">Lý do khác</option></select>
+            <textarea name="details" maxlength="500" rows="2" placeholder="Chi tiết (không bắt buộc)" aria-label="Chi tiết báo cáo"></textarea>
+            <button type="submit" class="button button-outline-dark">Lưu báo cáo</button>
+            <p id="report-status" class="form-status" role="status"></p>
+          </form>
+        </details>
+      </div>
+    </div>
+  </dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

@@ -1,0 +1,126 @@
+{
+  "listings": [
+    {
+      "id": "f93a7913-c582-420f-8e83-d3b21d222ceb",
+      "title": "Bộ sách nhập môn Marketing",
+      "category": "Học tập",
+      "condition": "Tốt",
+      "mode": "sale",
+      "price": 95000,
+      "campus": "ĐH Kinh tế Quốc dân",
+      "seller": "Mai",
+      "description": "Sách có ghi chú bằng bút chì; đủ bộ 3 cuốn.",
+      "source": "student",
+      "imageUrl": "https://images.unsplash.com/photo-1636622812372-63074d5214d5?auto=format&fit=crop&w=850&q=78",
+      "createdAt": "2026-09-25T15:06:52.575Z"
+    },
+    {
+      "id": "01f3fd9b-af2d-49f8-a234-c54538c4e23a",
+      "title": "Máy tính khoa học còn tốt",
+      "category": "Học tập",
+      "condition": "Tốt",
+      "mode": "sale",
+      "price": 180000,
+      "campus": "ĐHQG Hà Nội",
+      "seller": "Minh Anh",
+      "description": "Máy hoạt động tốt, kèm nắp và pin đang dùng.",
+      "source": "student",
+      "imageUrl": "https://images.unsplash.com/photo-1710776531873-fa1c10b7a68f?auto=format&fit=crop&w=850&q=78",
+      "createdAt": "2026-09-25T14:06:52.576Z"
+    },
+    {
+      "id": "0c32cf9d-1d9c-4d5f-b48f-bf292bf13e99",
+      "title": "Bàn phím cơ gọn nhẹ",
+      "category": "Công nghệ",
+      "condition": "Đã qua sử dụng",
+      "mode": "trade",
+      "price": 0,
+      "campus": "ĐH Bách khoa Hà Nội",
+      "seller": "Huy",
+      "description": "Muốn đổi lấy giá đỡ laptop. Bạn xem và thử trước khi đổi nhé.",
+      "source": "student",
+      "imageUrl": "https://images.unsplash.com/photo-1638909067462-1310c4011610?auto=format&fit=crop&w=850&q=78",
+      "createdAt": "2026-09-25T13:06:52.576Z"
+    },
+    {
+      "id": "bbf2dfd0-5b67-4247-85db-343f11d6de96",
+      "title": "Đèn bàn học ánh sáng ấm",
+      "category": "Đồ dùng",
+      "condition": "Như mới",
+      "mode": "sale",
+      "price": 120000,
+      "campus": "ĐH Ngoại thương",
+      "seller": "Phương",
+      "description": "Đèn gập gọn, có 3 mức sáng, dây sạc đi kèm.",
+      "source": "student",
+      "imageUrl": "https://images.unsplash.com/photo-1713281318582-53ec4ccb8aea?auto=format&fit=crop&w=850&q=78",
+      "createdAt": "2026-09-25T12:06:52.576Z"
+    },
+    {
+      "id": "d36b7149-1925-4bdc-8e18-65a6709766ce",
+      "title": "Xe đạp đi học",
+      "category": "Di chuyển",
+      "condition": "Tốt",
+      "mode": "sale",
+      "price": 650000,
+      "campus": "ĐH Sư phạm Hà Nội",
+      "seller": "Nam",
+      "description": "Lốp và phanh còn ổn, có thể hẹn xem ở cổng trường.",
+      "source": "student",
+      "imageUrl": "https://images.unsplash.com/photo-1576855750566-29224ca31db2?auto=format&fit=crop&w=850&q=78",
+      "createdAt": "2026-09-25T11:06:52.576Z"
+    },
+    {
+      "id": "a6bae37c-0d4e-48f6-a8d4-83d0ec5aefab",
+      "title": "Tai nghe chụp tai giảm giá",
+      "category": "Công nghệ",
+      "condition": "Như mới",
+      "mode": "sale",
+      "price": 390000,
+      "campus": "Ưu đãi đối tác · minh họa",
+      "seller": "Cửa hàng mẫu",
+      "description": "Sản phẩm và mức giá chỉ để minh họa giao diện đối tác.",
+      "source": "retailer",
+      "imageUrl": "https://images.unsplash.com/photo-1584433202630-5dc24e240130?auto=format&fit=crop&w=850&q=78",
+      "createdAt": "2026-09-25T10:06:52.576Z"
+    },
+    {
+      "id": "92955b69-3359-4f6c-a81b-ba2ab8ba73bd",
+      "title": "Combo sổ tay học kỳ mới",
+      "category": "Học tập",
+      "condition": "Như mới",
+      "mode": "sale",
+      "price": 79000,
+      "campus": "Ưu đãi đối tác · minh họa",
+      "seller": "Cửa hàng mẫu",
+      "description": "Tin đối tác mẫu; chưa có liên kết mua hàng thật.",
+      "source": "retailer",
+      "imageUrl": "",
+      "createdAt": "2026-09-25T09:06:52.576Z"
+    },
+    {
+      "id": "f4c70e04-e04d-473a-8733-0ee4e935db59",
+      "title": "Kệ sách mini để bàn",
+      "category": "Đồ dùng",
+      "condition": "Tốt",
+      "mode": "trade",
+      "price": 0,
+      "campus": "ĐH Tôn Đức Thắng",
+      "seller": "Linh",
+      "description": "Kệ chắc chắn, muốn đổi lấy vài cuốn tiểu thuyết hoặc cây nhỏ.",
+      "source": "student",
+      "imageUrl": "",
+      "createdAt": "2026-09-25T08:06:52.576Z"
+    }
+  ],
+  "messages": [
+    {
+      "id": "f551638c-e8a3-4372-b0c1-b5e08ed6a1c3",
+      "listingId": "0c32cf9d-1d9c-4d5f-b48f-bf292bf13e99",
+      "buyerName": "khánh",
+      "message": "dạ mình có nhu cầu",
+      "createdAt": "2026-09-25T15:33:36.686Z"
+    }
+  ],
+  "reports": []
+}
