@@ -1,0 +1,16 @@
+{
+  "seed": 20261015,
+  "role_counts": {
+    "Chỉ mua hoặc nhận pass phòng": 15,
+    "Chỉ bán hoặc pass phòng đang thuê": 15,
+    "Cả hai": 10,
+    "Chưa có nhu cầu": 10
+  },
+  "assumptions": [
+    "Cơ cấu 50 phiếu do người dựng kịch bản đặt, không ước lượng tỷ lệ thị trường.",
+    "Sinh viên chiếm phần lớn mẫu mô phỏng; giữ một phần ngoài nhóm để phân tích riêng.",
+    "Người mua lo mất cọc thiên về muốn biết điều kiện hoàn tiền; người cần bán sớm thiên về thử nền tảng.",
+    "Danh mục, khu vực và kinh nghiệm được lấy mẫu từ các lựa chọn; chưa giả định các mặt hàng cụ thể khớp nhau.",
+    "Giá thử nghiệm 20.000 đồng chỉ là tình huống hỏi, không sửa chính sách phí của project."
+  ]
+}
