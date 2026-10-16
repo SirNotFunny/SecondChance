@@ -2,7 +2,7 @@
   "data_origin": "synthetic",
   "responses_checked": 50,
   "questions_checked": 15,
-  "negative_cases_passed": 16,
+  "negative_cases_passed": 19,
   "checks": [
     "cột và mã phiếu",
     "nhãn mô phỏng",
@@ -12,6 +12,7 @@
     "cơ cấu kịch bản",
     "chọn nhiều không rỗng và không trùng",
     "báo cáo danh mục chồng lấp và tổng người",
+    "15–20 tự luận viết riêng không trùng",
     "tái tạo đầu ra và báo cáo"
   ],
   "result": "passed",

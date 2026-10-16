@@ -22,7 +22,9 @@ Bộ sinh thật là `generate()` trong [GenerateData.py](tools/GenerateData.py)
 
 Q05/Q08 dùng cấu hình `multiple_selection` trong SimulationConfig: số danh mục và trọng số là giả định, không phải phân bố từ khảo sát thật. Luồng ngẫu nhiên riêng bổ sung danh mục vào lựa chọn ban đầu, giữ các đáp án khác khi đổi sang chọn nhiều. Không có mô hình xác định người trả lời sẽ chọn tất cả hay chỉ một trong các phương án.
 
-Câu mở dùng ngân hàng câu ngắn theo rào cản, có thể lặp và có phiếu bỏ trống. Không dùng mô hình ngôn ngữ hoặc tạo danh tính giả. Bộ dữ liệu hướng tới đáp án hợp lệ và quan hệ đã khai báo; không tuyên bố mô phỏng đầy đủ cách người thật suy nghĩ hoặc viết.
+Q14 có 15–20 phiếu trả lời theo phạm vi đã duyệt; bản này có 18 câu do agent viết riêng theo nhu cầu và rào cản của từng phiếu, lưu tại `open_responses` trong SimulationConfig. Các phiếu khác bỏ trống; không lấy ngẫu nhiên câu từ ngân hàng và không dùng danh tính giả. Câu có độ dài và cách diễn đạt khác nhau nhằm phục vụ bài tập, nhưng không tuyên bố mô phỏng đầy đủ cách người thật suy nghĩ hoặc viết. Số lượng và nội dung được đặt trước, không phải phát hiện về mức độ phổ biến của vấn đề.
+
+Việc bỏ các lượt lấy mẫu tự luận ngẫu nhiên làm thay đổi chuỗi lấy mẫu của các câu đóng ở những phiếu tiếp theo. Vì vậy, báo cáo được tạo lại theo toàn bộ dữ liệu mới; không diễn giải chênh lệch giữa hai phiên bản thành thay đổi nhu cầu thị trường.
 
 ## Giới hạn quyết định
 
@@ -52,7 +54,7 @@ Lệnh chạy bộ sinh thật, kiểm tra phiếu, tạo lại CSV, Form, Analy
 python3 tools/VerifyData.py
 ```
 
-Kiểm tra bao gồm 50 phiếu đã lưu, chọn một/chọn nhiều ở Q05/Q08 và các ca cố ý phá dữ liệu: mất nhãn mô phỏng, đáp án ngoài lựa chọn, thiếu câu bắt buộc, trả lời câu không hiện, mảng rỗng, lựa chọn trùng hoặc sai kiểu/định dạng. Báo cáo thật được kiểm tra bằng tình huống hai người có các danh mục chồng lấp, gồm ánh xạ pass phòng và nhóm chấp nhận phí. Những ca lỗi phải bị từ chối; kiểm tra thất bại sẽ trả mã thoát khác 0. Đây là kiểm tra workflow dữ liệu, không phải kiểm chứng thị trường.
+Kiểm tra bao gồm 50 phiếu đã lưu, chọn một/chọn nhiều ở Q05/Q08 và các ca cố ý phá dữ liệu: mất nhãn mô phỏng, đáp án ngoài lựa chọn, thiếu câu bắt buộc, trả lời câu không hiện, mảng rỗng, lựa chọn trùng hoặc sai kiểu/định dạng, tự luận trùng và số phiếu tự luận ngoài 15–20. Nội dung tự luận phải khớp bản viết tay; kiểm tra không trùng bỏ qua khác biệt chữ hoa/thường và khoảng trắng. Báo cáo thật được kiểm tra bằng tình huống hai người có các danh mục chồng lấp, gồm ánh xạ pass phòng và nhóm chấp nhận phí. Những ca lỗi phải bị từ chối; kiểm tra thất bại sẽ trả mã thoát khác 0. Đây là kiểm tra workflow dữ liệu, không phải kiểm chứng thị trường.
 
 Kiểm tra được nối vào pre-commit cục bộ; hook toàn cục hiện có tiếp tục chạy các kiểm tra tệp đã stage. Sau khi clone sang máy khác, cài hook cục bộ bằng:
 

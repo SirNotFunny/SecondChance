@@ -78,9 +78,10 @@ def analyze(rows: list[dict]) -> str:
     lines += ["", "Q07 hỏi mức chấp nhận phí nói chung, không hỏi riêng từng danh mục. Người chọn nhiều danh mục xuất hiện ở nhiều hàng; không cộng các hàng để tính người trả phí hoặc doanh thu, không kết luận họ chấp nhận phí cho từng danh mục.", "", "**Quyết định minh họa:** mời nhóm chấp nhận phí thử quy trình và mức giá; giải thích điều kiện cho nhóm còn hỏi về hoàn tiền trước khi đo lại. Không cộng nhóm còn cần thông tin vào nhóm chấp nhận trả tiền.",
               "**Giới hạn:** chưa có thanh toán thật hoặc báo giá đối tác. Vì vậy không tính doanh thu dự báo, lợi nhuận hay giá tối ưu. Không sửa chính sách phí chưa chốt trong [TrustAndSafety](docs/TrustAndSafety.md#hai-chế-độ-giao-dịch).", "",
               "## 6. Câu mở và kinh nghiệm giao dịch", ""]
-    comments = Counter(r["Q14"] for r in target if r["Q14_status"] == "answered")
-    lines += table(["Nội dung giả lập", "Số lần"], [[k, v] for k, v in comments.most_common()])
-    lines += ["", "Câu mở lấy từ ngân hàng câu ngắn có điều kiện, không phải lời nói của người được phỏng vấn. Không trích dẫn như bằng chứng khách hàng.", ""]
+    comments: list[dict] = [r for r in rows if r["Q14_status"] == "answered"]
+    lines += [f"Toàn bộ mẫu có {len(comments)}/{len(rows)} phiếu trả lời Q14; {len(rows) - len(comments)} phiếu bỏ qua. Bảng dưới gồm cả người ngoài nhóm mục tiêu để xem đủ các câu tự luận.", ""]
+    lines += table(["Mã phiếu", "Câu trả lời mô phỏng"], [[r["response_id"], r["Q14"]] for r in comments])
+    lines += ["", "Các câu tự luận được agent viết riêng theo ngữ cảnh từng phiếu, không lặp nguyên văn. Đây không phải lời nói của người được phỏng vấn và không chứng minh mức độ tự nhiên hay đại diện cho cách người thật trả lời. Không trích dẫn như bằng chứng khách hàng.", ""]
     experience = Counter(r["Q15"] for r in target)
     lines += table(["Kinh nghiệm 12 tháng qua", f"Số người / {len(target)}"], [[k, v] for k, v in experience.items()])
     lines += ["", "**Quyết định minh họa:** tách người chưa giao dịch để thử hướng dẫn nhập môn; phỏng vấn người có kinh nghiệm về trở ngại họ vẫn gặp. Không nhận diện VIP hay tăng trọng số từ số lần giao dịch.", "",

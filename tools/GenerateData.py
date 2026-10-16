@@ -61,22 +61,10 @@ def generate(survey: dict, config: dict) -> list[dict]:
             row["Q13"] = rng.choice(["Chỉ xem và tìm hiểu", "Chưa định dùng"])
         if row["Q09"] == "Trong 7 ngày" and row["Q10"] == "Sẵn sàng thực hiện":
             row["Q13"] = rng.choices(questions["Q13"]["options"], [7, 2, 1])[0]
-        # Câu mở bám rào cản của phiếu; không thêm tên hoặc giấy tờ giả.
-        comments: dict[str, list[str]] = {
-            "Lo mất tiền cọc": ["Muốn biết khi nào được hoàn cọc.", "Đừng bắt chuyển cọc cho người lạ."],
-            "Lo hàng hoặc phòng khác mô tả": ["Ảnh thật với ghi rõ lỗi giúp mình dễ chọn hơn.", "Cần xem đúng tình trạng trước khi quyết định."],
-            "Thiếu tin phù hợp gần mình": ["Muốn lọc tin gần trường để đi xem.", "Tìm mãi chưa có món phù hợp ở gần."],
-            "Khó sắp xếp kiểm tra trực tiếp": ["Có lịch hẹn xem thì đỡ nhắn qua lại.", "Mình cần thống nhất giờ xem trước."],
-        }
-        if rng.random() < 0.36:
-            row["Q14_status"] = "skipped_optional"
+        if row["response_id"] in config["open_responses"]:
+            row["Q14"] = config["open_responses"][row["response_id"]]
         else:
-            choices: list[str] = comments.get(row["Q06"], [
-                "Ghi rõ quy trình và phí trước nhé.", "Có hướng dẫn cho người mới thì tốt.",
-                "Chưa có góp ý thêm.", "Muốn xem thử vài tin trước đã."])
-            if row["Q10"] == "Cần hướng dẫn chuẩn bị giấy tờ":
-                choices = ["Cần danh sách giấy tờ cần chuẩn bị.", "Hướng dẫn đăng tin từng bước nhé."]
-            row["Q14"] = rng.choice(choices)
+            row["Q14_status"] = "skipped_optional"
         rows.append(row)
     return rows
 

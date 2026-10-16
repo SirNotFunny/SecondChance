@@ -22,6 +22,11 @@ def validate(rows: list[dict], survey: dict, config: dict) -> None:
     assert Counter(r["Q03"] for r in rows) == Counter(config["role_counts"]), "Sai cơ cấu kịch bản"
     expected_fields = {"response_id", "data_origin"} | {key for q in questions
                        for key in (q["id"], q["id"] + "_status")}
+    open_rows: list[dict] = [r for r in rows if r["Q14_status"] == "answered"]
+    assert 15 <= len(open_rows) <= 20, "Q14 phải có 15–20 phiếu trả lời"
+    normalized: list[str] = [" ".join(r["Q14"].split()).casefold() for r in open_rows]
+    assert len(set(normalized)) == len(normalized), "Q14 có câu trả lời trùng nhau"
+    assert {r["response_id"]: r["Q14"] for r in open_rows} == config["open_responses"], "Q14 không khớp bản viết tay"
     for row in rows:
         assert set(row) == expected_fields, "Sai cột dữ liệu"
         assert row["data_origin"] == "synthetic", "Thiếu nhãn mô phỏng"
@@ -92,6 +97,25 @@ def rejection_checks(rows: list[dict], survey: dict, config: dict) -> int:
             else:
                 raise AssertionError(f"Không chặn được {qid}={value}")
             tested += 1
+    for case in ("trùng tự luận", "thiếu tự luận", "thừa tự luận"):
+        broken = copy.deepcopy(rows)
+        answered: list[dict] = [r for r in broken if r["Q14_status"] == "answered"]
+        if case == "trùng tự luận":
+            answered[1]["Q14"] = answered[0]["Q14"]
+        elif case == "thiếu tự luận":
+            for row in answered[14:]:
+                row["Q14"], row["Q14_status"] = "", "skipped_optional"
+        else:
+            skipped: list[dict] = [r for r in broken if r["Q14_status"] == "skipped_optional"]
+            for index, row in enumerate(skipped[:21 - len(answered)]):
+                row["Q14"], row["Q14_status"] = f"Tự luận kiểm tra {index}", "answered"
+        try:
+            validate(broken, survey, config)
+        except AssertionError as error:
+            print(f"Đã chặn {case}: {error}")
+        else:
+            raise AssertionError(f"Không chặn được {case}")
+        tested += 1
     return tested
 
 
@@ -137,7 +161,8 @@ def main() -> None:
         "questions_checked": len(survey["questions"]), "negative_cases_passed": rejected,
         "checks": ["cột và mã phiếu", "nhãn mô phỏng", "đáp án hợp lệ", "nhánh hiển thị",
                    "câu bắt buộc và tự nguyện", "cơ cấu kịch bản", "chọn nhiều không rỗng và không trùng",
-                   "báo cáo danh mục chồng lấp và tổng người", "tái tạo đầu ra và báo cáo"],
+                   "báo cáo danh mục chồng lấp và tổng người", "15–20 tự luận viết riêng không trùng",
+                   "tái tạo đầu ra và báo cáo"],
         "result": "passed",
         "limits": "Không kiểm chứng nhu cầu thật, tính tự nhiên của ngôn ngữ hoặc hiệu quả kinh doanh."
     }
