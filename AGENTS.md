@@ -20,4 +20,7 @@ Second Chance là nền tảng mua bán đồ đã qua sử dụng, giúp kết 
 
 Second Chance giúp người mua tiết kiệm chi phí, người bán tận dụng lại những món đồ không còn sử dụng, đồng thời góp phần giảm lãng phí và kéo dài vòng đời sản phẩm.
 
+## Vị trí bộ khảo sát mô phỏng
 
+Form, dữ liệu, báo cáo và công cụ khảo sát đã chuyển sang repository [FakeData](https://github.com/Binhbocnc1234/FakeData), tại `surveys/SecondChance/`.
+Tài liệu ý tưởng kinh doanh và tài liệu môn học vẫn nằm trong repository SecondChance.
