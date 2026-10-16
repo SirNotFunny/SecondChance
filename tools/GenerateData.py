@@ -25,6 +25,8 @@ def visible(question: dict, role: str) -> bool:
 
 def generate(survey: dict, config: dict) -> list[dict]:
     rng = random.Random(config["seed"])
+    multiple: dict = config["multiple_selection"]
+    selection_rng = random.Random(multiple["seed"])
     questions: dict[str, dict] = {q["id"]: q for q in survey["questions"]}
     roles: list[str] = [role for role, count in config["role_counts"].items()
                         for _ in range(count)]
@@ -41,6 +43,11 @@ def generate(survey: dict, config: dict) -> list[dict]:
                 value: str = ""
             else:
                 value = rng.choice(q["options"])
+                if q.get("selection") == "multiple":
+                    count: int = selection_rng.choices(multiple["counts"], multiple["weights"])[0]
+                    others: list[str] = [option for option in q["options"] if option != value]
+                    selected: list[str] = [value] + selection_rng.sample(others, count - 1)
+                    value = json.dumps([option for option in q["options"] if option in selected], ensure_ascii=False)
             row[qid], row[qid + "_status"] = value, "answered"
         row["Q03"] = role
         row["Q01"] = rng.choices(questions["Q01"]["options"], [3, 4, 4, 1])[0]
@@ -84,13 +91,14 @@ def render_form(survey: dict) -> str:
         "Nguồn duy nhất của câu hỏi và lựa chọn là [Survey.json](fake_data/Survey.json); tài liệu này được sinh tự động.",
         "Q03 quyết định nhánh: chỉ mua trả lời Q05–Q07; chỉ bán trả lời Q08–Q10; cả hai trả lời cả hai nhóm.",
         "Người chưa có nhu cầu bỏ Q04–Q10. Mọi người trả lời Q01–Q03 và Q11–Q15; chỉ Q14 tự nguyện.",
-        "Vì vậy mỗi người thấy 8, 12 hoặc 15 câu. Các câu lựa chọn đều chọn đúng một đáp án.",
+        "Vì vậy mỗi người thấy 8, 12 hoặc 15 câu. Q05 và Q08 chọn nhiều đáp án (ít nhất một); các câu lựa chọn còn lại chọn đúng một đáp án.",
         "Các mục Why dưới đây là suy luận thiết kế: nêu dữ liệu cần kết hợp, quyết định được hỗ trợ và giới hạn.", ""]
     for q in survey["questions"]:
         lines.extend([f"## {q['id']}. {q['text']}", "",
                       f"**Hiển thị:** {labels[q['audience']]}. **Bắt buộc:** {'Không' if q.get('optional') else 'Có'}.", ""])
         if "options" in q:
-            lines.append("**Lựa chọn:** " + "; ".join(q["options"]) + ".")
+            label: str = "**Lựa chọn (chọn nhiều, ít nhất một):** " if q.get("selection") == "multiple" else "**Lựa chọn:** "
+            lines.append(label + "; ".join(q["options"]) + ".")
         else:
             lines.append("**Trả lời:** Văn bản tự do.")
         lines.extend(["", "**Why — quyết định kinh doanh:** " + q["why"], ""])

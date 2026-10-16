@@ -36,7 +36,16 @@ def validate(rows: list[dict], survey: dict, config: dict) -> None:
             else:
                 assert status == "answered" and value.strip(), f"Thiếu câu bắt buộc {qid}"
                 if "options" in q:
-                    assert value in q["options"], f"Đáp án ngoài ngân hàng {qid}"
+                    if q.get("selection") == "multiple":
+                        try:
+                            selected = json.loads(value)
+                        except json.JSONDecodeError as error:
+                            raise AssertionError(f"Sai định dạng JSON {qid}: {value}") from error
+                        assert isinstance(selected, list) and selected, f"Phải chọn ít nhất một đáp án {qid}"
+                        assert all(isinstance(item, str) and item in q["options"] for item in selected), f"Đáp án ngoài ngân hàng {qid}"
+                        assert len(selected) == len(set(selected)), f"Trùng đáp án {qid}"
+                    else:
+                        assert value in q["options"], f"Đáp án ngoài ngân hàng {qid}"
         if row["Q03"] == "Chưa có nhu cầu":
             assert row["Q13"] != "Thử dùng cho nhu cầu hiện có", "Ý định không khớp nhu cầu"
         if row["Q10"] == "Không muốn thực hiện":
@@ -70,7 +79,42 @@ def rejection_checks(rows: list[dict], survey: dict, config: dict) -> int:
         print(f"Đã chặn đi sai nhánh: {error}")
     else:
         raise AssertionError("Không chặn được đi sai nhánh")
-    return tested + 1
+    tested += 1
+    for qid in ("Q05", "Q08"):
+        for value in ('[]', '["Không tồn tại"]', '["Laptop", "Laptop"]', '"Laptop"', '[1]', 'Laptop'):
+            broken = copy.deepcopy(rows)
+            active = next(r for r in broken if r[qid + "_status"] == "answered")
+            active[qid] = value
+            try:
+                validate(broken, survey, config)
+            except AssertionError as error:
+                print(f"Đã chặn {qid}={value}: {error}")
+            else:
+                raise AssertionError(f"Không chặn được {qid}={value}")
+            tested += 1
+    return tested
+
+
+def analysis_checks(rows: list[dict]) -> None:
+    # Chạy báo cáo thật với các lựa chọn chồng lấp và khác nhau giữa hai phía.
+    fixtures: list[dict] = [copy.deepcopy(next(r for r in rows if r["Q03"] == "Cả hai")) for _ in range(2)]
+    for row in fixtures:
+        row["Q01"], row["Q02"] = "Sinh viên năm 1", "Cầu Giấy – Xuân Thủy"
+        row["Q07"] = "Sẵn sàng trả 20.000 đồng"
+    fixtures[0]["Q05"] = '["Laptop", "Điện thoại"]'
+    fixtures[0]["Q08"] = '["Điện thoại", "Pass phòng đang thuê"]'
+    fixtures[1]["Q05"] = '["Laptop"]'
+    fixtures[1]["Q08"] = '["Pass phòng đang thuê"]'
+    report: str = analyze(fixtures)
+    for expected in (
+        "| Cầu Giấy – Xuân Thủy | Laptop | 2 | 0 | 2 |",
+        "| Cầu Giấy – Xuân Thủy | Điện thoại | 1 | 1 | 0 |",
+        "| Cầu Giấy – Xuân Thủy | Nhận pass phòng trọ | 0 | 2 | -2 |",
+        "| Laptop | 2 | 2 | 0 |", "| Điện thoại | 1 | 1 | 0 |",
+        "2 người mua, 2 người bán, trong đó 2 người có cả hai vai trò",
+    ):
+        assert expected in report, f"Báo cáo đếm sai lựa chọn chồng lấp: {expected}"
+    print("ĐẠT: báo cáo đếm từng danh mục, ánh xạ pass phòng, nhóm phí và tổng người không trùng.")
 
 
 def main() -> None:
@@ -82,12 +126,18 @@ def main() -> None:
     rows: list[dict] = list(csv.DictReader(io.StringIO(expected[DATA / "Responses.csv"])))
     validate(rows, survey, config)
     rejected: int = rejection_checks(rows, survey, config)
+    for qid in ("Q05", "Q08"):
+        selections: list[list[str]] = [json.loads(r[qid]) for r in rows if r[qid + "_status"] == "answered"]
+        assert any(len(items) == 1 for items in selections), f"Chưa kiểm tra chọn một ở {qid}"
+        assert any(len(items) > 1 for items in selections), f"Chưa kiểm tra chọn nhiều ở {qid}"
+    analysis_checks(rows)
     expected[ROOT / "Analysis.md"] = analyze(rows)
     result: dict = {
         "data_origin": "synthetic", "responses_checked": len(rows),
         "questions_checked": len(survey["questions"]), "negative_cases_passed": rejected,
         "checks": ["cột và mã phiếu", "nhãn mô phỏng", "đáp án hợp lệ", "nhánh hiển thị",
-                   "câu bắt buộc và tự nguyện", "cơ cấu kịch bản", "tái tạo đầu ra và báo cáo"],
+                   "câu bắt buộc và tự nguyện", "cơ cấu kịch bản", "chọn nhiều không rỗng và không trùng",
+                   "báo cáo danh mục chồng lấp và tổng người", "tái tạo đầu ra và báo cáo"],
         "result": "passed",
         "limits": "Không kiểm chứng nhu cầu thật, tính tự nhiên của ngôn ngữ hoặc hiệu quả kinh doanh."
     }

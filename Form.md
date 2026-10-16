@@ -9,7 +9,7 @@ Bộ khảo sát và phản hồi giả lập phục vụ bài tập Kĩ năng k
 Nguồn duy nhất của câu hỏi và lựa chọn là [Survey.json](fake_data/Survey.json); tài liệu này được sinh tự động.
 Q03 quyết định nhánh: chỉ mua trả lời Q05–Q07; chỉ bán trả lời Q08–Q10; cả hai trả lời cả hai nhóm.
 Người chưa có nhu cầu bỏ Q04–Q10. Mọi người trả lời Q01–Q03 và Q11–Q15; chỉ Q14 tự nguyện.
-Vì vậy mỗi người thấy 8, 12 hoặc 15 câu. Các câu lựa chọn đều chọn đúng một đáp án.
+Vì vậy mỗi người thấy 8, 12 hoặc 15 câu. Q05 và Q08 chọn nhiều đáp án (ít nhất một); các câu lựa chọn còn lại chọn đúng một đáp án.
 Các mục Why dưới đây là suy luận thiết kế: nêu dữ liệu cần kết hợp, quyết định được hỗ trợ và giới hạn.
 
 ## Q01. Bạn thuộc nhóm nào?
@@ -44,13 +44,13 @@ Các mục Why dưới đây là suy luận thiết kế: nêu dữ liệu cần
 
 **Why — quyết định kinh doanh:** Ưu tiên tiếp cận nhóm có thời điểm gần thay vì dồn ngân sách vào toàn bộ người nói có nhu cầu. Với người vừa mua vừa bán, câu này không cho biết thời điểm của từng phía; không dùng để khẳng định hai giao dịch sẽ diễn ra cùng lúc.
 
-## Q05. Nếu chỉ chọn một nhu cầu mua/nhận pass ưu tiên nhất, bạn chọn gì?
+## Q05. Trong 3 tháng tới, bạn đang cân nhắc mua hoặc nhận pass những gì? Chọn tất cả phương án phù hợp, kể cả khi bạn chỉ định chọn một trong số đó.
 
 **Hiển thị:** Có nhu cầu mua/nhận pass ở Q03. **Bắt buộc:** Có.
 
-**Lựa chọn:** Laptop; Điện thoại; Xe máy; Nhận pass phòng trọ; Đồ khác.
+**Lựa chọn (chọn nhiều, ít nhất một):** Laptop; Điện thoại; Xe máy; Nhận pass phòng trọ; Đồ khác.
 
-**Why — quyết định kinh doanh:** So với Q08 theo cụm để chọn danh mục cần bổ sung tin đăng. Không dùng số người chọn để quyết định nhập kho: Second Chance kết nối người bán, không phải cửa hàng sở hữu hàng hóa. Với phòng trọ, đo nhu cầu thuê tiếp chứ không phải mua nhà.
+**Why — quyết định kinh doanh:** Ghi nhận các danh mục người mua cân nhắc, ghép Q02 và Q08 để chọn nơi tìm hiểu và tuyển người bán phù hợp, không bỏ qua nhu cầu ngoài ưu tiên số một. Mỗi người được tính một lần trong từng danh mục đã chọn; không cộng các danh mục thành tổng người hoặc số giao dịch. Chưa phân biệt muốn mua nhiều món với chỉ chọn một trong nhiều phương án, chưa biết thứ tự ưu tiên. Second Chance kết nối người bán, không nhập kho; nhận pass phòng là thuê tiếp, không phải mua nhà.
 
 ## Q06. Điều gì cản trở bạn nhiều nhất khi mua đồ cũ hoặc nhận pass phòng qua kênh hiện tại?
 
@@ -68,13 +68,13 @@ Các mục Why dưới đây là suy luận thiết kế: nêu dữ liệu cần
 
 **Why — quyết định kinh doanh:** Ghép mức chấp nhận phí với danh mục và nỗi lo để chọn nhóm thử nghiệm dịch vụ sau ưu đãi. Đây chỉ là phản ứng với một mức giá giả định, không phải giá tối ưu hay doanh thu. Chưa có báo giá đối tác nên không thể kết luận lợi nhuận; người mua xe hoặc xem phòng trực tiếp không mặc định cần giữ tiền.
 
-## Q08. Nếu chỉ đăng một tin ưu tiên nhất, bạn sẽ bán hoặc pass gì?
+## Q08. Trong 3 tháng tới, bạn đang cân nhắc bán hoặc pass những gì? Chọn tất cả phương án phù hợp, kể cả khi bạn chỉ định chọn một trong số đó.
 
 **Hiển thị:** Có nhu cầu bán/pass ở Q03. **Bắt buộc:** Có.
 
-**Lựa chọn:** Laptop; Điện thoại; Xe máy; Pass phòng đang thuê; Đồ khác.
+**Lựa chọn (chọn nhiều, ít nhất một):** Laptop; Điện thoại; Xe máy; Pass phòng đang thuê; Đồ khác.
 
-**Why — quyết định kinh doanh:** Đếm nguồn tin tiềm năng theo danh mục/cụm để chọn nơi tuyển đại sứ và người bán. So với Q05 để phát hiện lệch hai phía, nhưng một người nói muốn bán chưa phải một tin đã xác minh hoặc hàng đúng nhu cầu người mua.
+**Why — quyết định kinh doanh:** Ghi nhận các danh mục người bán cân nhắc, ghép Q02 và Q05 để chọn nhóm mời đăng tin thử nghiệm. Mỗi người được tính một lần trong từng danh mục đã chọn; không cộng các danh mục thành tổng người, số món, số tin hoặc số giao dịch. Chưa biết người bán định bán tất cả hay chỉ chọn một phương án, chưa biết danh mục ưu tiên. Ý định bán chưa phải tin đã xác minh hoặc hàng khớp nhu cầu người mua.
 
 ## Q09. Bạn muốn tìm được người mua hoặc người nhận pass trong bao lâu kể từ khi đăng tin?
 

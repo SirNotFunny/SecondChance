@@ -14,11 +14,13 @@ Yêu cầu thiết kế đã được khôi phục từ session FakeData `1b73d8
 
 Đọc câu hỏi, lựa chọn, nhánh và Why trong [Form](Form.md). Nguồn biên soạn duy nhất là [Survey.json](fake_data/Survey.json); Form được chương trình tạo từ nguồn đó để tránh hai bản câu hỏi lệch nhau.
 
-Dữ liệu để phân tích nằm trong [Responses.csv](fake_data/Responses.csv). Mỗi dòng là một người giả lập; `response_id` là mã phiếu, `data_origin=synthetic` là nhãn mô phỏng. Các cột Q01–Q15 giữ đáp án nguyên văn; cột `_status` đi kèm phân biệt `answered` (đã trả lời), `not_shown` (không hiện theo nhánh), `skipped_optional` (hiện nhưng bỏ câu tự nguyện). Không chuyển các trạng thái này thành câu hỏi khảo sát.
+Dữ liệu để phân tích nằm trong [Responses.csv](fake_data/Responses.csv). Mỗi dòng là một người giả lập; `response_id` là mã phiếu, `data_origin=synthetic` là nhãn mô phỏng. Các cột Q01–Q15 giữ đáp án nguyên văn; riêng Q05/Q08 lưu mảng JSON, ví dụ `["Laptop", "Điện thoại"]`, trong một ô CSV. Câu không hiển thị vẫn để ô trống, không phải mảng rỗng; thứ tự trong mảng theo ngân hàng câu hỏi, không phải thứ tự ưu tiên. Cột `_status` đi kèm phân biệt `answered` (đã trả lời), `not_shown` (không hiện theo nhánh), `skipped_optional` (hiện nhưng bỏ câu tự nguyện). Không chuyển các trạng thái này thành câu hỏi khảo sát.
 
 Cơ cấu vai trò và seed nằm trong [SimulationConfig.json](fake_data/SimulationConfig.json). Cơ cấu này được đặt trước, không phải kết quả phát hiện thị trường. Số phiếu của từng nhóm không có ý nghĩa về độ phổ biến ngoài thực tế.
 
 Bộ sinh thật là `generate()` trong [GenerateData.py](tools/GenerateData.py). Các liên hệ có điều kiện về thời điểm, ý định thử dùng, nỗi lo cọc và xác minh là giả định thiết kế. Vì vậy, tương quan thu được không thể được báo cáo như một khám phá độc lập. Các lựa chọn còn lại được lấy mẫu từ ngân hàng; mẫu không được hiệu chỉnh để tạo chênh lệch cung/cầu có lợi cho một danh mục.
+
+Q05/Q08 dùng cấu hình `multiple_selection` trong SimulationConfig: số danh mục và trọng số là giả định, không phải phân bố từ khảo sát thật. Luồng ngẫu nhiên riêng bổ sung danh mục vào lựa chọn ban đầu, giữ các đáp án khác khi đổi sang chọn nhiều. Không có mô hình xác định người trả lời sẽ chọn tất cả hay chỉ một trong các phương án.
 
 Câu mở dùng ngân hàng câu ngắn theo rào cản, có thể lặp và có phiếu bỏ trống. Không dùng mô hình ngôn ngữ hoặc tạo danh tính giả. Bộ dữ liệu hướng tới đáp án hợp lệ và quan hệ đã khai báo; không tuyên bố mô phỏng đầy đủ cách người thật suy nghĩ hoặc viết.
 
@@ -26,6 +28,7 @@ Câu mở dùng ngân hàng câu ngắn theo rào cản, có thể lặp và có
 
 - Đối chiếu mua/bán theo danh mục và cụm chỉ gợi ý nơi cần kiểm tra nguồn cung. Không có giá, model máy, tình trạng, địa chỉ cụ thể hoặc thời điểm riêng của cả hai phía để xác nhận khớp giao dịch.
 - Người có hai vai trò xuất hiện trong cả hai phía nhưng chỉ là một người. Không cộng tổng hai phía thành cỡ mẫu.
+- Q05/Q08 ghi nhận các danh mục cân nhắc, không xếp hạng ưu tiên và không phân biệt nhu cầu đồng thời với phương án thay thế. Không cộng các danh mục thành tổng người, số món hoặc giao dịch. Q07 đo chấp nhận phí nói chung, không xác nhận trả phí riêng cho từng danh mục đã chọn.
 - Thời gian bán mong muốn không phải thời gian bán thực tế; ý định dùng có điều kiện không phải chuyển đổi thật.
 - Giá 20.000 đồng là tình huống thử nghiệm ở một mức giá duy nhất. Không có dữ liệu để ước lượng đường cầu, giá tối ưu, doanh thu hoặc lợi nhuận.
 - Tần suất giao dịch quá khứ chưa đủ để xác định VIP; không tăng trọng số người giao dịch nhiều khi báo cáo tỷ lệ chung.
@@ -49,7 +52,7 @@ Lệnh chạy bộ sinh thật, kiểm tra phiếu, tạo lại CSV, Form, Analy
 python3 tools/VerifyData.py
 ```
 
-Kiểm tra bao gồm 50 phiếu đã lưu và bốn ca cố ý phá dữ liệu: mất nhãn mô phỏng, đáp án ngoài lựa chọn, thiếu câu bắt buộc và trả lời câu không hiện. Những ca lỗi này phải bị từ chối; kiểm tra thất bại sẽ trả mã thoát khác 0. Đây là kiểm tra workflow dữ liệu, không phải kiểm chứng thị trường.
+Kiểm tra bao gồm 50 phiếu đã lưu, chọn một/chọn nhiều ở Q05/Q08 và các ca cố ý phá dữ liệu: mất nhãn mô phỏng, đáp án ngoài lựa chọn, thiếu câu bắt buộc, trả lời câu không hiện, mảng rỗng, lựa chọn trùng hoặc sai kiểu/định dạng. Báo cáo thật được kiểm tra bằng tình huống hai người có các danh mục chồng lấp, gồm ánh xạ pass phòng và nhóm chấp nhận phí. Những ca lỗi phải bị từ chối; kiểm tra thất bại sẽ trả mã thoát khác 0. Đây là kiểm tra workflow dữ liệu, không phải kiểm chứng thị trường.
 
 Kiểm tra được nối vào pre-commit cục bộ; hook toàn cục hiện có tiếp tục chạy các kiểm tra tệp đã stage. Sau khi clone sang máy khác, cài hook cục bộ bằng:
 

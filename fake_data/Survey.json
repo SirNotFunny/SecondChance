@@ -28,9 +28,10 @@
     },
     {
       "id": "Q05", "audience": "buyer",
-      "text": "Nếu chỉ chọn một nhu cầu mua/nhận pass ưu tiên nhất, bạn chọn gì?",
+      "selection": "multiple",
+      "text": "Trong 3 tháng tới, bạn đang cân nhắc mua hoặc nhận pass những gì? Chọn tất cả phương án phù hợp, kể cả khi bạn chỉ định chọn một trong số đó.",
       "options": ["Laptop", "Điện thoại", "Xe máy", "Nhận pass phòng trọ", "Đồ khác"],
-      "why": "So với Q08 theo cụm để chọn danh mục cần bổ sung tin đăng. Không dùng số người chọn để quyết định nhập kho: Second Chance kết nối người bán, không phải cửa hàng sở hữu hàng hóa. Với phòng trọ, đo nhu cầu thuê tiếp chứ không phải mua nhà."
+      "why": "Ghi nhận các danh mục người mua cân nhắc, ghép Q02 và Q08 để chọn nơi tìm hiểu và tuyển người bán phù hợp, không bỏ qua nhu cầu ngoài ưu tiên số một. Mỗi người được tính một lần trong từng danh mục đã chọn; không cộng các danh mục thành tổng người hoặc số giao dịch. Chưa phân biệt muốn mua nhiều món với chỉ chọn một trong nhiều phương án, chưa biết thứ tự ưu tiên. Second Chance kết nối người bán, không nhập kho; nhận pass phòng là thuê tiếp, không phải mua nhà."
     },
     {
       "id": "Q06", "audience": "buyer",
@@ -46,9 +47,10 @@
     },
     {
       "id": "Q08", "audience": "seller",
-      "text": "Nếu chỉ đăng một tin ưu tiên nhất, bạn sẽ bán hoặc pass gì?",
+      "selection": "multiple",
+      "text": "Trong 3 tháng tới, bạn đang cân nhắc bán hoặc pass những gì? Chọn tất cả phương án phù hợp, kể cả khi bạn chỉ định chọn một trong số đó.",
       "options": ["Laptop", "Điện thoại", "Xe máy", "Pass phòng đang thuê", "Đồ khác"],
-      "why": "Đếm nguồn tin tiềm năng theo danh mục/cụm để chọn nơi tuyển đại sứ và người bán. So với Q05 để phát hiện lệch hai phía, nhưng một người nói muốn bán chưa phải một tin đã xác minh hoặc hàng đúng nhu cầu người mua."
+      "why": "Ghi nhận các danh mục người bán cân nhắc, ghép Q02 và Q05 để chọn nhóm mời đăng tin thử nghiệm. Mỗi người được tính một lần trong từng danh mục đã chọn; không cộng các danh mục thành tổng người, số món, số tin hoặc số giao dịch. Chưa biết người bán định bán tất cả hay chỉ chọn một phương án, chưa biết danh mục ưu tiên. Ý định bán chưa phải tin đã xác minh hoặc hàng khớp nhu cầu người mua."
     },
     {
       "id": "Q09", "audience": "seller",

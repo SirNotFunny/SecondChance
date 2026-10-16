@@ -1,6 +1,7 @@
 """Phân tích phiếu mô phỏng, không ước lượng thị trường thật."""
 from __future__ import annotations
 
+import json
 from collections import Counter
 from pathlib import Path
 
@@ -30,23 +31,23 @@ def analyze(rows: list[dict]) -> str:
     lines += table(["Vai trò", "Số phiếu / 50"], [[role, count] for role, count in counts.items()])
     lines += ["", "Cơ cấu này do cấu hình quy định, không phải phát hiện về tỷ lệ người có nhu cầu.", "",
               "## 2. Danh mục × cụm địa lý: chọn nơi bổ sung nguồn cung", "",
-              "Đếm số người chọn một danh mục ưu tiên. Chênh lệch = người mua − người bán; không phải số món hàng thiếu.", ""]
+              "Đếm số người cân nhắc từng danh mục: mỗi người một lần trong mỗi danh mục đã chọn. Chênh lệch = số người cân nhắc mua − số người cân nhắc bán; không phải số món hàng thiếu. Các nhóm danh mục có thể trùng người, không cộng thành tổng người hoặc số giao dịch.", ""]
     cells: list[list] = []
     mapping: dict[str, str] = {"Nhận pass phòng trọ": "Pass phòng đang thuê"}
     for area in sorted({r["Q02"] for r in target}):
         for category in ("Laptop", "Điện thoại", "Xe máy", "Nhận pass phòng trọ", "Đồ khác"):
-            buy: int = sum(r["Q02"] == area and r["Q05"] == category for r in buyers)
-            sell: int = sum(r["Q02"] == area and r["Q08"] == mapping.get(category, category) for r in sellers)
+            buy: int = sum(r["Q02"] == area and category in json.loads(r["Q05"]) for r in buyers)
+            sell: int = sum(r["Q02"] == area and mapping.get(category, category) in json.loads(r["Q08"]) for r in sellers)
             if buy or sell:
                 cells.append([area, category, buy, sell, buy - sell])
-    lines += table(["Cụm", "Danh mục", "Mua", "Bán", "Chênh lệch"], cells)
+    lines += table(["Cụm", "Danh mục", "Người cân nhắc mua", "Người cân nhắc bán", "Chênh lệch"], cells)
     if cells:
         gap = max(cells, key=lambda c: c[4])
         if gap[4] > 0:
-            lines += ["", f"**Quyết định minh họa:** ô {gap[0]} / {gap[1]} có {gap[2]} người mua và {gap[3]} người bán, chênh {gap[4]}. Vì vậy, thử tuyển thêm người bán phù hợp tại ô này trước khi kéo thêm người mua; không nhập kho."]
+            lines += ["", f"**Quyết định minh họa:** ô {gap[0]} / {gap[1]} có {gap[2]} người cân nhắc mua và {gap[3]} người cân nhắc bán, chênh {gap[4]}. Vì vậy, tìm hiểu nhu cầu cụ thể và thử mời người bán phù hợp tại ô này trước khi kéo thêm người mua; không nhập kho. Đây không phải xếp hạng danh mục ưu tiên."]
         else:
-            lines += ["", "**Quyết định minh họa:** không có ô thiếu phía bán theo số người; kiểm tra chất lượng tin và nhu cầu cụ thể trước khi chi ngân sách bổ sung nguồn cung."]
-    lines += ["", "**Giới hạn:** số người từng phía của mỗi ô được ghi trong bảng; không có model máy, giá, tình trạng, thời điểm riêng cho mỗi phía hoặc sự đồng ý của chủ trọ. Vì vậy chưa biết cung và cầu có khớp để giao dịch hay không. Không dùng bảng để chọn cụm triển khai thật.", "",
+            lines += ["", "**Quyết định minh họa:** không có ô có số người cân nhắc mua lớn hơn số người cân nhắc bán; chưa thể kết luận nguồn cung đã đủ. Kiểm tra chất lượng tin và nhu cầu cụ thể trước khi chi ngân sách bổ sung nguồn cung."]
+    lines += ["", "**Giới hạn:** chưa phân biệt mua/bán nhiều món với chỉ chọn một trong nhiều phương án; chưa biết thứ tự ưu tiên. Không cộng số đếm giữa các danh mục. Số người từng phía của mỗi ô được ghi trong bảng; không có model máy, giá, tình trạng, thời điểm riêng cho mỗi phía hoặc sự đồng ý của chủ trọ. Vì vậy chưa biết cung và cầu có khớp để giao dịch hay không. Không dùng bảng để chọn cụm triển khai thật.", "",
               "## 3. Người bán để mời thử nghiệm", ""]
     ready: list[dict] = [r for r in sellers if r["Q04"] == "Trong 1 tháng" and
                         r["Q10"] == "Sẵn sàng thực hiện" and r["Q13"] == "Thử dùng cho nhu cầu hiện có"]
@@ -68,13 +69,13 @@ def analyze(rows: list[dict]) -> str:
               "**Giới hạn:** chưa đo thông điệp nào tạo đăng ký hoặc giao dịch; không gọi đây là kết quả thử nghiệm marketing.", "",
               "## 5. Phí thử nghiệm: chọn nhóm kiểm tra khả năng thu tiền", ""]
     fee_cells: list[list] = []
-    for category in sorted({r["Q05"] for r in buyers}):
-        group: list[dict] = [r for r in buyers if r["Q05"] == category]
+    for category in sorted({category for r in buyers for category in json.loads(r["Q05"])}):
+        group: list[dict] = [r for r in buyers if category in json.loads(r["Q05"])]
         pay: int = sum(r["Q07"] == "Sẵn sàng trả 20.000 đồng" for r in group)
         conditional: int = sum(r["Q07"] == "Cần biết thêm điều kiện hoàn tiền" for r in group)
         fee_cells.append([category, len(group), pay, conditional])
-    lines += table(["Danh mục", "Người mua", "Chấp nhận 20.000 đ", "Cần điều kiện hoàn tiền"], fee_cells)
-    lines += ["", "**Quyết định minh họa:** mời nhóm chấp nhận phí thử quy trình và mức giá; giải thích điều kiện cho nhóm còn hỏi về hoàn tiền trước khi đo lại. Không cộng nhóm còn cần thông tin vào nhóm chấp nhận trả tiền.",
+    lines += table(["Danh mục cân nhắc", "Số người", "Chấp nhận phí nói chung 20.000 đ", "Cần điều kiện hoàn tiền"], fee_cells)
+    lines += ["", "Q07 hỏi mức chấp nhận phí nói chung, không hỏi riêng từng danh mục. Người chọn nhiều danh mục xuất hiện ở nhiều hàng; không cộng các hàng để tính người trả phí hoặc doanh thu, không kết luận họ chấp nhận phí cho từng danh mục.", "", "**Quyết định minh họa:** mời nhóm chấp nhận phí thử quy trình và mức giá; giải thích điều kiện cho nhóm còn hỏi về hoàn tiền trước khi đo lại. Không cộng nhóm còn cần thông tin vào nhóm chấp nhận trả tiền.",
               "**Giới hạn:** chưa có thanh toán thật hoặc báo giá đối tác. Vì vậy không tính doanh thu dự báo, lợi nhuận hay giá tối ưu. Không sửa chính sách phí chưa chốt trong [TrustAndSafety](docs/TrustAndSafety.md#hai-chế-độ-giao-dịch).", "",
               "## 6. Câu mở và kinh nghiệm giao dịch", ""]
     comments = Counter(r["Q14"] for r in target if r["Q14_status"] == "answered")

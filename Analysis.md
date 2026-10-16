@@ -24,31 +24,33 @@ Cơ cấu này do cấu hình quy định, không phải phát hiện về tỷ 
 
 ## 2. Danh mục × cụm địa lý: chọn nơi bổ sung nguồn cung
 
-Đếm số người chọn một danh mục ưu tiên. Chênh lệch = người mua − người bán; không phải số món hàng thiếu.
+Đếm số người cân nhắc từng danh mục: mỗi người một lần trong mỗi danh mục đã chọn. Chênh lệch = số người cân nhắc mua − số người cân nhắc bán; không phải số món hàng thiếu. Các nhóm danh mục có thể trùng người, không cộng thành tổng người hoặc số giao dịch.
 
-| Cụm | Danh mục | Mua | Bán | Chênh lệch |
+| Cụm | Danh mục | Người cân nhắc mua | Người cân nhắc bán | Chênh lệch |
 | --- | --- | --- | --- | --- |
-| Bách khoa – Kinh tế Quốc dân – Xây dựng | Laptop | 1 | 0 | 1 |
-| Bách khoa – Kinh tế Quốc dân – Xây dựng | Điện thoại | 0 | 3 | -3 |
+| Bách khoa – Kinh tế Quốc dân – Xây dựng | Laptop | 1 | 2 | -1 |
+| Bách khoa – Kinh tế Quốc dân – Xây dựng | Điện thoại | 1 | 3 | -2 |
 | Bách khoa – Kinh tế Quốc dân – Xây dựng | Xe máy | 1 | 0 | 1 |
-| Bách khoa – Kinh tế Quốc dân – Xây dựng | Nhận pass phòng trọ | 1 | 0 | 1 |
+| Bách khoa – Kinh tế Quốc dân – Xây dựng | Nhận pass phòng trọ | 1 | 1 | 0 |
+| Bách khoa – Kinh tế Quốc dân – Xây dựng | Đồ khác | 1 | 0 | 1 |
 | Cầu Giấy – Xuân Thủy | Laptop | 1 | 2 | -1 |
 | Cầu Giấy – Xuân Thủy | Điện thoại | 1 | 1 | 0 |
-| Cầu Giấy – Xuân Thủy | Xe máy | 2 | 0 | 2 |
-| Cầu Giấy – Xuân Thủy | Nhận pass phòng trọ | 2 | 1 | 1 |
+| Cầu Giấy – Xuân Thủy | Xe máy | 5 | 0 | 5 |
+| Cầu Giấy – Xuân Thủy | Nhận pass phòng trọ | 3 | 1 | 2 |
 | Cầu Giấy – Xuân Thủy | Đồ khác | 1 | 2 | -1 |
 | Hà Đông – Thanh Xuân | Laptop | 1 | 2 | -1 |
-| Hà Đông – Thanh Xuân | Xe máy | 0 | 1 | -1 |
+| Hà Đông – Thanh Xuân | Xe máy | 1 | 2 | -1 |
+| Hà Đông – Thanh Xuân | Nhận pass phòng trọ | 1 | 0 | 1 |
 | Hà Đông – Thanh Xuân | Đồ khác | 2 | 0 | 2 |
 | Khu vực khác tại Hà Nội | Laptop | 1 | 0 | 1 |
-| Khu vực khác tại Hà Nội | Điện thoại | 1 | 0 | 1 |
+| Khu vực khác tại Hà Nội | Điện thoại | 2 | 1 | 1 |
 | Khu vực khác tại Hà Nội | Xe máy | 1 | 0 | 1 |
 | Khu vực khác tại Hà Nội | Nhận pass phòng trọ | 0 | 2 | -2 |
-| Khu vực khác tại Hà Nội | Đồ khác | 2 | 0 | 2 |
+| Khu vực khác tại Hà Nội | Đồ khác | 4 | 0 | 4 |
 
-**Quyết định minh họa:** ô Cầu Giấy – Xuân Thủy / Xe máy có 2 người mua và 0 người bán, chênh 2. Vì vậy, thử tuyển thêm người bán phù hợp tại ô này trước khi kéo thêm người mua; không nhập kho.
+**Quyết định minh họa:** ô Cầu Giấy – Xuân Thủy / Xe máy có 5 người cân nhắc mua và 0 người cân nhắc bán, chênh 5. Vì vậy, tìm hiểu nhu cầu cụ thể và thử mời người bán phù hợp tại ô này trước khi kéo thêm người mua; không nhập kho. Đây không phải xếp hạng danh mục ưu tiên.
 
-**Giới hạn:** số người từng phía của mỗi ô được ghi trong bảng; không có model máy, giá, tình trạng, thời điểm riêng cho mỗi phía hoặc sự đồng ý của chủ trọ. Vì vậy chưa biết cung và cầu có khớp để giao dịch hay không. Không dùng bảng để chọn cụm triển khai thật.
+**Giới hạn:** chưa phân biệt mua/bán nhiều món với chỉ chọn một trong nhiều phương án; chưa biết thứ tự ưu tiên. Không cộng số đếm giữa các danh mục. Số người từng phía của mỗi ô được ghi trong bảng; không có model máy, giá, tình trạng, thời điểm riêng cho mỗi phía hoặc sự đồng ý của chủ trọ. Vì vậy chưa biết cung và cầu có khớp để giao dịch hay không. Không dùng bảng để chọn cụm triển khai thật.
 
 ## 3. Người bán để mời thử nghiệm
 
@@ -82,13 +84,15 @@ Có 0/14 người bán mục tiêu đồng thời có nhu cầu gần, sẵn sà
 
 ## 5. Phí thử nghiệm: chọn nhóm kiểm tra khả năng thu tiền
 
-| Danh mục | Người mua | Chấp nhận 20.000 đ | Cần điều kiện hoàn tiền |
+| Danh mục cân nhắc | Số người | Chấp nhận phí nói chung 20.000 đ | Cần điều kiện hoàn tiền |
 | --- | --- | --- | --- |
 | Laptop | 4 | 3 | 0 |
-| Nhận pass phòng trọ | 3 | 2 | 1 |
-| Xe máy | 4 | 1 | 1 |
-| Điện thoại | 2 | 0 | 0 |
-| Đồ khác | 5 | 2 | 2 |
+| Nhận pass phòng trọ | 5 | 3 | 1 |
+| Xe máy | 8 | 4 | 2 |
+| Điện thoại | 4 | 0 | 0 |
+| Đồ khác | 8 | 4 | 2 |
+
+Q07 hỏi mức chấp nhận phí nói chung, không hỏi riêng từng danh mục. Người chọn nhiều danh mục xuất hiện ở nhiều hàng; không cộng các hàng để tính người trả phí hoặc doanh thu, không kết luận họ chấp nhận phí cho từng danh mục.
 
 **Quyết định minh họa:** mời nhóm chấp nhận phí thử quy trình và mức giá; giải thích điều kiện cho nhóm còn hỏi về hoàn tiền trước khi đo lại. Không cộng nhóm còn cần thông tin vào nhóm chấp nhận trả tiền.
 **Giới hạn:** chưa có thanh toán thật hoặc báo giá đối tác. Vì vậy không tính doanh thu dự báo, lợi nhuận hay giá tối ưu. Không sửa chính sách phí chưa chốt trong [TrustAndSafety](docs/TrustAndSafety.md#hai-chế-độ-giao-dịch).

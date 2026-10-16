@@ -1,5 +1,10 @@
 {
   "seed": 20261015,
+  "multiple_selection": {
+    "seed": 20261016,
+    "counts": [1, 2, 3],
+    "weights": [6, 3, 1]
+  },
   "role_counts": {
     "Chỉ mua hoặc nhận pass phòng": 15,
     "Chỉ bán hoặc pass phòng đang thuê": 15,
@@ -11,6 +16,7 @@
     "Sinh viên chiếm phần lớn mẫu mô phỏng; giữ một phần ngoài nhóm để phân tích riêng.",
     "Người mua lo mất cọc thiên về muốn biết điều kiện hoàn tiền; người cần bán sớm thiên về thử nền tảng.",
     "Danh mục, khu vực và kinh nghiệm được lấy mẫu từ các lựa chọn; chưa giả định các mặt hàng cụ thể khớp nhau.",
-    "Giá thử nghiệm 20.000 đồng chỉ là tình huống hỏi, không sửa chính sách phí của project."
+    "Giá thử nghiệm 20.000 đồng chỉ là tình huống hỏi, không sửa chính sách phí của project.",
+    "Q05/Q08 chọn 1, 2 hoặc 3 danh mục với trọng số 6:3:1; dùng luồng ngẫu nhiên riêng để giữ các đáp án khác. Đây là giả định mô phỏng, không phải phân bố đo từ người thật."
   ]
 }
