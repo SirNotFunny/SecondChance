@@ -177,6 +177,6 @@ http.createServer(async (req, res) => {
     if (!error.status) console.error(error);
     json(res, error.status || 500, { error: error.status ? error.message : "Lỗi máy chủ." });
   }
-}).listen(PORT, "127.0.0.1", () => {
+}).listen(PORT, "0.0.0.0", () => {
   console.log(`Second Chance đang chạy tại http://localhost:${PORT}`);
 });
